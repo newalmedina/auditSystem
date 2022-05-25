@@ -1,0 +1,59 @@
+//instalar tools de manera global
+dotnet tool install --global dotnet-ef --version 5.0.1
+dotnet tool install -g dotnet-aspnet-codegenerator --version 5.0.1
+
+crud de ejemplo
+https://bravedeveloper.com/2021/09/25/como-hacer-un-mantenedor-crud-con-net-core-mvc/
+
+
+
+comandos
+ dotnet ef database update 
+ dotnet ef database update -TargetMigration:"-1" //rollback 1
+  dotnet ef add-migration <name>
+
+
+añadir autenticación proyecto ya creado 
+package
+ <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
+
+-el ApplicationDBContext debe de extender de IdentityDbContext en vez de DbContext
+- Ejecutar comando cambiando el namespace para que no cree otra base de datos.
+ dotnet aspnet-codegenerator identity -dc auditSystem.Context.ApplicationDbContext --files "Account.Register;Account.Login;Account.Logout;Account.RegisterConfirmation"
+
+--añadir en el layout 
+ <partial name="_LoginPartial" />
+
+ --agregar migracion
+ dotnet ef migrations add CreateIdentitySchema
+
+ añadir en el startup.cs
+    app.UseAuthentication();
+y en el mismo startupd dentro de MapControllerRoute
+endpoints.MapRazorPages();
+
+añadir servicio de autenticacion en startup.cs
+services.AddDefaultIdentity<IdentityUser>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
+
+[AllowAnonymous]
+[Authorize]
+
+
+
+
+
+
+mejoras de cara al identity 
+cambiar traducciones validaciones ver video 37
+
+
+comprobar si mail existe 
+video 42
